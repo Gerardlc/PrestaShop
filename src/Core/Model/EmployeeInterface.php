@@ -24,11 +24,36 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Category\Exception;
+declare(strict_types=1);
+
+namespace PrestaShop\PrestaShop\Core\Model;
 
 /**
- * Class MenuThumbnailsLimitException is thrown when maximum number of thumbnail images is reached.
+ * @experimental Depends on ADR https://github.com/PrestaShop/ADR/pull/33
  */
-class MenuThumbnailsLimitException extends CategoryException
+interface EmployeeInterface
 {
+    public function getId(): int;
+
+    public function getProfileId(): int;
+
+    public function getLanguageId(): int;
+
+    public function getFirstName(): string;
+
+    public function getLastName(): string;
+
+    public function getEmail(): string;
+
+    public function getPassword(): string;
+
+    public function getImageUrl(): string;
+
+    public function getDefaultTabId(): int;
+
+    public function getDefaultShopId(): int;
+
+    public function getAssociatedShopIds(): array;
+
+    public function getAssociatedShopGroupIds(): array;
 }

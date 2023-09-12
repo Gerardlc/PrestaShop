@@ -26,44 +26,29 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\PrestaShop\Core\Category\Provider;
+namespace PrestaShopBundle\ApiPlatform\Normalizer;
 
-use PrestaShop\PrestaShop\Core\Domain\Category\ValueObject\MenuThumbnailId;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-/**
- * This class is responsible for providing available category menu thumbnail keys.
- * Category can only have 3 thumbnails (0,1,2).
- * We check if thumbnails with those id's exist, if they do they are no longer available.
- */
-class MenuThumbnailAvailableKeyProvider
+class DateTimeImmutableDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @var CategoryImageFinder
-     */
-    private $categoryImageFinder;
-
-    public function __construct(CategoryImageFinder $categoryImageFinder)
+    public function denormalize($data, string $type, string $format = null, array $context = [])
     {
-        $this->categoryImageFinder = $categoryImageFinder;
+        return new \DateTimeImmutable($data);
+    }
+
+    public function supportsDenormalization($data, string $type, string $format = null)
+    {
+        return \DateTimeImmutable::class === $type;
     }
 
     /**
-     * @param int $categoryId
+     * Set higher priority than ObjectDenormalizer.
      *
-     * @return array<int, int>
+     * @return int
      */
-    public function getAvailableKeys(int $categoryId): array
+    public static function getDefaultPriority(): int
     {
-        $usedKeys = [];
-
-        foreach ($this->categoryImageFinder->findMenuThumbnails($categoryId) as $file) {
-            $matches = [];
-
-            if (preg_match('/^' . $categoryId . '-([0-9])?_thumb.jpg/i', $file->getFilename(), $matches) === 1) {
-                $usedKeys[] = (int) $matches[1];
-            }
-        }
-
-        return array_diff(MenuThumbnailId::ALLOWED_ID_VALUES, $usedKeys);
+        return 10;
     }
 }

@@ -24,17 +24,53 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Category\CommandHandler;
+declare(strict_types=1);
 
-use PrestaShop\PrestaShop\Core\Domain\Category\Command\DeleteCategoryMenuThumbnailImageCommand;
+namespace PrestaShopBundle\ApiPlatform\Resources;
 
-/**
- * Defines contract for service that handles category menu thumbnail deleting command.
- */
-interface DeleteCategoryMenuThumbnailImageHandlerInterface
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Put;
+use PrestaShop\PrestaShop\Core\Domain\CartRule\Command\EditCartRuleCommand;
+use PrestaShopBundle\ApiPlatform\Processor\CommandProcessor;
+
+#[ApiResource(
+    operations: [
+        new Put(
+            uriTemplate: '/cartRule',
+            processor: CommandProcessor::class,
+            extraProperties: ['command' => EditCartRuleCommand::class]
+        ),
+    ],
+)]
+class CartRule
 {
-    /**
-     * @param DeleteCategoryMenuThumbnailImageCommand $command
-     */
-    public function handle(DeleteCategoryMenuThumbnailImageCommand $command);
+    public int $cartRuleId;
+
+    public string $description;
+
+    public string $code;
+
+    public array $minimumAmount;
+
+    public bool $minimumAmountShippingIncluded;
+
+    public int $customerId;
+
+    public array $localizedNames;
+
+    public bool $highlightInCart;
+
+    public bool $allowPartialUse;
+
+    public int $priority;
+
+    public bool $active;
+
+    public array $validityDateRange;
+
+    public int $totalQuantity;
+
+    public int $quantityPerUser;
+
+    public array $cartRuleAction;
 }

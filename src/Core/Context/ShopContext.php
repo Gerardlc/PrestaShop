@@ -26,36 +26,29 @@
 
 declare(strict_types=1);
 
-namespace PrestaShop\PrestaShop\Core\Category\Provider;
+namespace PrestaShop\PrestaShop\Core\Context;
 
-use Symfony\Component\Finder\Finder;
+use PrestaShop\PrestaShop\Core\Domain\Shop\ValueObject\ShopConstraint;
+use PrestaShop\PrestaShop\Core\Model\ShopInterface;
 
 /**
- * Finds used thumb images for specific category id
+ * @experimental Depends on ADR https://github.com/PrestaShop/ADR/pull/36
  */
-class CategoryImageFinder extends Finder
+class ShopContext
 {
-    /**
-     * @var string
-     */
-    private $categoryImgDir;
-
-    /**
-     * @param string $categoryImgDir
-     */
-    public function __construct(string $categoryImgDir)
-    {
-        parent::__construct();
-        $this->categoryImgDir = $categoryImgDir;
+    public function __construct(
+        private readonly ShopConstraint $shopConstraint,
+        private readonly ShopInterface $shop
+    ) {
     }
 
-    /**
-     * @param int $categoryId
-     *
-     * @return Finder
-     */
-    public function findMenuThumbnails(int $categoryId): Finder
+    public function getShopConstraint(): ShopConstraint
     {
-        return $this->files()->name('/^' . $categoryId . '-([0-9])?_thumb.jpg/i')->in($this->categoryImgDir);
+        return $this->shopConstraint;
+    }
+
+    public function getShop(): ShopInterface
+    {
+        return $this->shop;
     }
 }

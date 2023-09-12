@@ -24,49 +24,34 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 
-namespace PrestaShop\PrestaShop\Core\Domain\Category\Command;
+declare(strict_types=1);
 
-use PrestaShop\PrestaShop\Core\Domain\Category\ValueObject\CategoryId;
-use PrestaShop\PrestaShop\Core\Domain\Category\ValueObject\MenuThumbnailId;
+namespace PrestaShop\PrestaShop\Core\Model;
 
 /**
- * Deletes given menu thumbnail for category.
+ * @experimental Depends on ADR https://github.com/PrestaShop/ADR/pull/33
  */
-class DeleteCategoryMenuThumbnailImageCommand
+interface ShopInterface
 {
-    /**
-     * @var CategoryId
-     */
-    private $categoryId;
+    public function getId(): int;
 
-    /**
-     * @var MenuThumbnailId
-     */
-    private $menuThumbnailId;
+    public function getName(): string;
 
-    /**
-     * @param int $categoryId
-     * @param int $menuThumbnailId
-     */
-    public function __construct($categoryId, $menuThumbnailId)
-    {
-        $this->categoryId = new CategoryId($categoryId);
-        $this->menuThumbnailId = new MenuThumbnailId($menuThumbnailId);
-    }
+    public function getShopGroupId(): int;
 
-    /**
-     * @return CategoryId
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
-    }
+    public function getCategoryId(): int;
 
-    /**
-     * @return MenuThumbnailId
-     */
-    public function getMenuThumbnailId()
-    {
-        return $this->menuThumbnailId;
-    }
+    public function getThemeName(): string;
+
+    public function getColor(): string;
+
+    public function isActive(): bool;
+
+    public function getPhysicalUri(): string;
+
+    public function getVirtualUri(): string;
+
+    public function getDomain(): string;
+
+    public function getDomainSSL(): string;
 }
